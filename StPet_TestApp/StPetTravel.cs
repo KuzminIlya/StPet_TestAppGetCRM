@@ -96,14 +96,14 @@ namespace StPet_TestApp
             for (int i = 0; i < Sights.Count; i++)
             {
                 List<Sight>[] FreeTime = new List<Sight>[DaysNum];
-                if (!fVisited[i])
+                if (!fVisited[i]) // проверка всех не посещенных мест
                 {
                     t_vis = Sights[i].TimeToVisit;
                     for (int j = 0; j < DaysNum; j++)
                     {
                         n[j] = new List<int>();
                         nlen[j] = new List<int>();
-                        FreeTime[j] = new List<Sight>();
+                        FreeTime[j] = new List<Sight>();// список для сохранения допустимых для тек. места свободных времен
                         for (int k = 0; k < TimeTable[j].Count - 2; k++)
                         {
                             if (TimeTable[j][k].Name == "Свободное время")
@@ -117,6 +117,7 @@ namespace StPet_TestApp
                                 m = Math.Max(TimeTable[j][k + 2].Priority, Sights[i].Priority) - (Math.Min(TimeTable[j][k + 2].Priority, Sights[i].Priority) + 1);
                                 t2_path = WeightMatrix[l][m];
 
+                                // Определение диапазона, для вставки места в маршрут
                                 if (Sights[i].OpeningTime < tf - t2_path && Sights[i].ClosingTime > ts + t1_path)
                                 {
                                     tf1 = Math.Min(Sights[i].ClosingTime, tf - t2_path);
@@ -156,9 +157,9 @@ namespace StPet_TestApp
                                 }
                             }
                         }
-                        if (t_vis <= 1E-6) break;
+                        if (t_vis <= 1E-6) break; // Если время посещ. текущего места может занять все свободное времена, то переходим к изменению расписания
                     }
-                    if(t_vis <= 1E-6)
+                    if(t_vis <= 1E-6) // добавление места в маршрут
                     {
                         int s;
                         for (int j = 0; j < DaysNum; j++)
